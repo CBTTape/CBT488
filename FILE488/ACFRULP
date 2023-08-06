@@ -1,0 +1,62 @@
+*
+*   This parm is used to place lrecl and blocksize into the
+*   JCL used by the ACFRULE process, and to pass flags into
+*   both programs.
+*
+*   programs:  ACFRUL1   ACFRUL2
+*
+*--------------------------------------------------------------------
+*
+*   FLAGS
+*
+*   process        C = Clone userid records to top of member
+*                  D = Comment out records with 'from' userid
+*                  U = Undo changes to lines with comments specified
+*                      as "DA("  example: " DA(ADDED 07/04/23 JCI)"
+*                      Enter as "U MM/DD/YY" to specify a date:
+*                      "U" alone defaults to current date.
+*                      note: Only removes line with " DA(" comments -
+*                            use "D" or "Z" to remove extra userid lines
+*                      note: Unable to fix previous "Z" changes.
+*                  Z = Physically remove records with 'from' userid
+*   from userid    userid to be cloned (required for C/Z/D process)
+*   to userid      new clone (required for C process)
+*   initials       two or three characters
+*   gap            Y = include space between date and initials
+*                      "MM/DD/YY XXX" vs "MM/DD/YYXXX"
+*   delay          ## = seconds to delay between job submissions
+*                       default is 04, range is 04 through 30
+*   trail          Y = carry over last eight bytes of cloned record
+*
+*
+* line designation F=process flags
+* |                D=DSN entry
+* |
+* |
+* - --------------- ---------------
+  F process         C                 C D U Z
+  F from userid
+  F to userid
+  F initials        XXX
+  F gap             Y
+  F delay           06
+  F trail           N
+* - --------------- ---------------
+*
+*
+*
+*   library name - enter up to 30 DSN's          lrecl blocksize
+*   |                                            |     |
+* - -------------------------------------------- ----- -----
+  D prefix.ACF2.RRULEFAC.CNTL                    00080 03120
+  D prefix.ACF2.RRULELFP.CNTL                    00080 03120
+  D prefix.ACF2.RRULELFT.CNTL                    00080 03120
+  D prefix.ACF2.RRULELKP.CNTL                    00080 03120
+  D prefix.ACF2.RRULELPP.CNTL                    00080 03120
+  D prefix.ACF2.RRULESTR.CNTL                    00080 03120
+  D prefix.ACF2.RRULEVCL.CNTL                    00080 03120
+  D prefix.LOF.RULES.ALL                         00132 13200
+  D prefix.ISPF.ACFR080                          00080 03120
+  D prefix.ISPF.ACFR132                          00132 13200
+  D prefix.ISPF.FILE488                          00080 27920
+* - -------------------------------------------- ----- -----

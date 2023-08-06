@@ -1,0 +1,32 @@
+//useridF  JOB (5000,4TH),'userid Fileaid',CLASS=S,MSGCLASS=R,
+//             REGION=4096K
+//*
+//JOBLIB   DD  DISP=SHR,DSN=userid.ISPF.OBJ
+//*
+//*-------------------------------------------------
+//*  Fileaid search jcl
+//*
+//*  Loop through libraries referenced by DD01
+//*  searching for string referenced by SELRECIF
+//*-------------------------------------------------
+//J0010    EXEC PGM=CAWABATC
+//SYSPRINT DD  SYSOUT=*
+//SYSLIST  DD  SYSOUT=*
+//SYSTOTAL DD  SYSOUT=*
+//SYSUDUMP DD  SYSOUT=*
+//ABNLIGNR DD  DUMMY
+//DD01     DD  DISP=SHR,DSN=prefix.LOF.RULES.ALL                   *shr
+//         DD  DISP=SHR,DSN=prefix.ACF2.RRULELFP.CNTL              *shr
+//*        DD  DISP=SHR,DSN=prefix.ACF2.RRULELFT.CNTL              *shr
+//*        DD  DISP=SHR,DSN=prefix.ACF2.RRULELKP.CNTL              *shr
+//*        DD  DISP=SHR,DSN=prefix.ACF2.RRULELPP.CNTL              *shr
+//*        DD  DISP=SHR,DSN=prefix.ACF2.CNTL                       *shr
+//*        DD  DISP=SHR,DSN=prefix.ACF2.SYSTEM                     *shr
+//*        DD  DISP=SHR,DSN=prefix.CA7.CNTL                        *shr
+//SYSIN    DD *
+ PRINT FORMAT(LIST),
+   INFILE(DD01),
+   SELRECIF(1,0,C"search string"),
+    OUTLIM(99999)
+//*
+//*-------------------------------------------------
